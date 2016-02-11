@@ -1,6 +1,28 @@
 "use script";
 
+import fs from "fs";
 import toposort from "toposort";
+
+class Target {
+  exists() {
+    throw new Error("You must implement exists() function.");
+  }
+}
+
+class FileTarget {
+  constructor(path) {
+    this.path = path;
+  }
+
+  exists() {
+    try {
+      fs.statSync(this.path);
+      return true;
+    } catch(error) {
+      return false;
+    }
+  }
+}
 
 class Task {
   key() {
@@ -13,6 +35,10 @@ class Task {
 
   requires() {
     return [];
+  }
+
+  output() {
+    throw new Error("You must implement output() function.");
   }
 }
 
@@ -47,8 +73,13 @@ class Workflow {
   run(task) {
     var dag = new DAG();
     dag.addTask(task);
-    dag.graph().forEach(t => t.run());
+    dag.graph().forEach(t => {
+      if (t.output().exists()) {
+        return;
+      }
+      t.run()
+    });
   }
 }
 
-export {Workflow, DAG, Task};
+export {Workflow, DAG, Task, Target, FileTarget};

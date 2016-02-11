@@ -1,6 +1,9 @@
 "use strict";
 
-import {Workflow, Task} from "./index";
+import fs from "fs";
+import path from "path";
+import {Workflow, Task, FileTarget} from "./index";
+import mkdirp from "mkdirp";
 
 class EchoTask extends Task {
   key() {
@@ -8,7 +11,15 @@ class EchoTask extends Task {
   }
 
   run() {
-    console.log(this.constructor);
+    console.log(this.key());
+    var output = this.output().path;
+    var dirname = path.dirname(output);
+    mkdirp.sync(dirname);
+    fs.writeFileSync(output, "done");
+  }
+
+  output() {
+    return new FileTarget(`/tmp/workflow/${this.key()}.txt`);
   }
 }
 

@@ -1,7 +1,8 @@
 {
   "devDependencies": {
     "babel-cli": "^6.5.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.5.0"
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.5.0",
+    "mkdirp": "^0.5.1"
   },
   "dependencies": {
     "toposort": "^0.2.12"

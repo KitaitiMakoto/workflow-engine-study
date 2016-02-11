@@ -40,6 +40,10 @@ class Task {
   output() {
     throw new Error("You must implement output() function.");
   }
+
+  input() {
+    return this.requires().map(task => task.output());
+  }
 }
 
 class DAG {

@@ -50,6 +50,7 @@ class DAG {
 
   graph() {
     var graph = toposort(this._tasks);
+    graph.reverse();
     return graph.map(key => this._keys[key]);
   }
 
